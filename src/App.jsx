@@ -1,21 +1,41 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+} from 'react-router-dom';
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile
+  updateProfile,
 } from 'firebase/auth';
+
 import { doc, setDoc } from 'firebase/firestore';
+
 import { auth, db } from './firebase';
+
+import Post from './Post';
+
 import './App.css';
 
 function Navbar() {
   return (
     <nav className="navbar">
-      <Link to="/" className="brand">DEV@Deakin</Link>
+      <Link to="/" className="brand">
+        DEV@Deakin
+      </Link>
+
       <div className="nav-links">
         <Link to="/">Home</Link>
+
+        <Link to="/post">Post</Link>
+
         <Link to="/login">Login</Link>
+
         <Link to="/register">Sign Up</Link>
       </div>
     </nav>
@@ -26,14 +46,29 @@ function Home() {
   return (
     <>
       <Navbar />
+
       <main className="home-page">
         <h1>Welcome to DEV@Deakin</h1>
-        <p>Discover and share your ideas with the Deakin community.</p>
+
+        <p>
+          Discover and share your ideas with the Deakin community.
+        </p>
+
         <div className="home-buttons">
-          <Link to="/login" className="button">Login</Link>
-          <Link to="/register" className="button secondary">Create Account</Link>
+          <Link to="/login" className="button">
+            Login
+          </Link>
+
+          <Link to="/register" className="button secondary">
+            Create Account
+          </Link>
+
+          <Link to="/post" className="button">
+            Create a Post
+          </Link>
         </div>
       </main>
+
       <footer>© DEV@Deakin</footer>
     </>
   );
@@ -45,18 +80,24 @@ function Register() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   async function handleRegister(event) {
     event.preventDefault();
+
     setError('');
 
-    if (fullName.trim().split(/\s+/).length < 2) {
+    const nameParts = fullName.trim().split(/\s+/);
+
+    if (nameParts.length < 2) {
       setError('Please enter your first and last name.');
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email.trim())) {
       setError('Please enter a valid email address.');
       return;
     }
@@ -76,19 +117,22 @@ function Register() {
       );
 
       await updateProfile(result.user, {
-        displayName: fullName.trim()
+        displayName: fullName.trim(),
       });
 
       await setDoc(doc(db, 'users', result.user.uid), {
-        firstName: fullName.trim().split(/\s+/)[0],
-        lastName: fullName.trim().split(/\s+/).slice(1).join(' '),
-        email: email.trim()
+        firstName: nameParts[0],
+        lastName: nameParts.slice(1).join(' '),
+        email: email.trim(),
       });
+
       navigate('/login', {
-        state: { message: 'Registration successful. Please log in.' }
+        state: {
+          message: 'Registration successful. Please log in.',
+        },
       });
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Registration failed.');
     } finally {
       setLoading(false);
     }
@@ -97,46 +141,55 @@ function Register() {
   return (
     <>
       <Navbar />
+
       <main className="auth-page">
         <form className="auth-card" onSubmit={handleRegister}>
           <h1>Create an Account</h1>
+
           <p>Join the DEV@Deakin community</p>
 
           <label htmlFor="fullName">Full Name</label>
+
           <input
             id="fullName"
             type="text"
             placeholder="Enter your first and last name"
             value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            onChange={(event) => setFullName(event.target.value)}
             autoComplete="name"
             required
           />
 
           <label htmlFor="registerEmail">Email Address</label>
+
           <input
             id="registerEmail"
             type="email"
             placeholder="Enter your email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             required
           />
 
           <label htmlFor="registerPassword">Password</label>
+
           <input
             id="registerPassword"
             type="password"
             placeholder="At least 6 characters"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             autoComplete="new-password"
-            minLength="6"
+            minLength={6}
             required
           />
 
-          {error && <p className="error-message">{error}</p>}
+          {error && (
+            <p className="error-message" role="alert">
+              {error}
+            </p>
+          )}
 
           <button type="submit" disabled={loading}>
             {loading ? 'Creating account...' : 'Sign Up'}
@@ -147,6 +200,7 @@ function Register() {
           </p>
         </form>
       </main>
+
       <footer>© DEV@Deakin</footer>
     </>
   );
@@ -157,20 +211,28 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   async function handleLogin(event) {
     event.preventDefault();
+
     setError('');
 
     try {
       setLoading(true);
 
-      await signInWithEmailAndPassword(auth, email.trim(), password);
+      await signInWithEmailAndPassword(
+        auth,
+        email.trim(),
+        password
+      );
 
       navigate('/');
     } catch {
-      setError('Login failed. Check your email and password, or sign up for an account.');
+      setError(
+        'Login failed. Check your email and password, or sign up for an account.'
+      );
     } finally {
       setLoading(false);
     }
@@ -179,34 +241,42 @@ function Login() {
   return (
     <>
       <Navbar />
+
       <main className="auth-page">
         <form className="auth-card" onSubmit={handleLogin}>
           <h1>Welcome Back</h1>
+
           <p>Login to your DEV@Deakin account</p>
 
           <label htmlFor="loginEmail">Email Address</label>
+
           <input
             id="loginEmail"
             type="email"
             placeholder="Enter your email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             required
           />
 
           <label htmlFor="loginPassword">Password</label>
+
           <input
             id="loginPassword"
             type="password"
             placeholder="Enter your password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             autoComplete="current-password"
             required
           />
 
-          {error && <p className="error-message">{error}</p>}
+          {error && (
+            <p className="error-message" role="alert">
+              {error}
+            </p>
+          )}
 
           <button type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
@@ -217,6 +287,19 @@ function Login() {
           </p>
         </form>
       </main>
+
+      <footer>© DEV@Deakin</footer>
+    </>
+  );
+}
+
+function PostPage() {
+  return (
+    <>
+      <Navbar />
+
+      <Post />
+
       <footer>© DEV@Deakin</footer>
     </>
   );
@@ -227,8 +310,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/register" element={<Register />} />
+
+        <Route path="/post" element={<PostPage />} />
       </Routes>
     </BrowserRouter>
   );

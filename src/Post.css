@@ -1,0 +1,233 @@
+/* Main Post Page */
+.post-page {
+    min-height: 100vh;
+    padding: 30px 20px;
+    background-color: #fafafa;
+    font-family: Arial, sans-serif;
+    color: #222222;
+    box-sizing: border-box;
+}
+
+.post-container {
+    width: 100%;
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+}
+
+/* New Post Heading */
+.post-main-heading {
+    margin: 0 0 15px;
+    padding: 8px 10px;
+    background-color: #e8e8e8;
+    color: #222222;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+/* Select Post Type */
+.post-type-row {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin: 12px 0 22px;
+    font-size: 12px;
+}
+
+.post-type-row>span {
+    font-weight: 600;
+}
+
+.post-type-row label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.post-type-row input[type="radio"] {
+    width: 13px;
+    height: 13px;
+    margin: 0;
+    accent-color: #555555;
+    cursor: pointer;
+}
+
+/* Section Heading */
+.post-section-heading {
+    margin-bottom: 10px;
+    padding: 7px 10px;
+    background-color: #e8e8e8;
+    border-left: 3px solid #777777;
+    color: #222222;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Instructions */
+.post-instructions {
+    margin: 10px 12px 18px;
+    color: #444444;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.post-instructions span {
+    color: #c0392b;
+}
+
+/* Form Fields */
+.post-form-fields {
+    padding: 0 10px;
+}
+
+.post-field-row {
+    display: grid;
+    grid-template-columns: 75px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 17px;
+}
+
+.post-field-row label,
+.post-field-column label {
+    color: #333333;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Input Fields */
+.post-field-row input[type="text"] {
+    width: 100%;
+    height: 29px;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    background-color: #ffffff;
+    color: #222222;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    transition: border-color 0.2s ease;
+}
+
+.post-field-row input::placeholder {
+    color: #888888;
+}
+
+/* Text Areas */
+.post-field-column {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 17px;
+}
+
+.post-field-column textarea {
+    display: block;
+    width: 100%;
+    min-height: 220px;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    background-color: #ffffff;
+    color: #222222;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+/* Article Fields */
+#articleAbstract {
+    min-height: 70px;
+}
+
+#articleText {
+    min-height: 180px;
+}
+
+.post-field-column textarea::placeholder {
+    color: #888888;
+}
+
+/* Focus Effect */
+.post-field-row input:focus,
+.post-field-column textarea:focus {
+    outline: none;
+    border-color: #777777;
+    box-shadow: 0 0 0 2px rgba(100, 100, 100, 0.08);
+}
+
+/* Tags */
+.tags-row {
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+
+/* Post Button */
+.post-button-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.post-button-row button {
+    min-width: 120px;
+    min-height: 31px;
+    padding: 7px 20px;
+    border: 1px solid #888888;
+    border-radius: 3px;
+    background-color: #999999;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.post-button-row button:hover {
+    background-color: #707070;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .post-page {
+        padding: 15px 10px;
+    }
+
+    .post-container {
+        padding: 12px;
+    }
+
+    .post-type-row {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .post-field-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+    }
+
+    .post-field-column textarea {
+        min-height: 170px;
+    }
+
+    #articleAbstract {
+        min-height: 70px;
+    }
+
+    #articleText {
+        min-height: 150px;
+    }
+
+    .post-button-row button {
+        width: 100%;
+    }
+}
