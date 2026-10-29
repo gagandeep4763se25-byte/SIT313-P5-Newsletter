@@ -2,12 +2,13 @@ import { useState } from 'react';
 import './Post.css';
 
 function Post() {
-    const [postType, setPostType] = useState('question');
+    const [postType, setPostType] = useState('article');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [abstract, setAbstract] = useState('');
     const [articleText, setArticleText] = useState('');
     const [tags, setTags] = useState('');
+
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -34,7 +35,10 @@ function Post() {
             }
         }
 
-        const enteredTags = tags.split(',').map((tag) => tag.trim()).filter(Boolean);
+        const enteredTags = tags
+            .split(',')
+            .map((tag) => tag.trim())
+            .filter(Boolean);
 
         if (enteredTags.length > 3) {
             window.alert('Please enter no more than 3 tags.');
@@ -48,21 +52,25 @@ function Post() {
 
         const uniqueTags = enteredTags.map((tag) => tag.toLowerCase());
 
-        if (new Set(uniqueTags).size !== uniqueTags.length) {
+        if (uniqueTags.length !== new Set(uniqueTags).size) {
             window.alert('Please remove duplicate tags.');
             return;
         }
 
-        window.alert(`Your ${postType === 'question' ? 'question' : 'article'} has been submitted successfully!`);
+        window.alert(
+            `Your ${postType === 'question' ? 'question' : 'article'} has been submitted successfully!`
+        );
     }
 
     return (
         <main className="post-page">
             <section className="post-container">
                 <h1 className="post-main-heading">New Post</h1>
+
                 <form onSubmit={handleSubmit}>
                     <div className="post-type-row">
                         <span>Select Post Type:</span>
+
                         <label>
                             <input
                                 type="radio"
@@ -73,6 +81,7 @@ function Post() {
                             />
                             Question
                         </label>
+
                         <label>
                             <input
                                 type="radio"
@@ -97,12 +106,15 @@ function Post() {
                     <div className="post-form-fields">
                         <div className="post-field-row">
                             <label htmlFor="postTitle">Title</label>
+
                             <input
                                 id="postTitle"
                                 type="text"
-                                placeholder={postType === 'question'
-                                    ? 'Start your question with how, what, why, etc.'
-                                    : 'Enter a descriptive title'}
+                                placeholder={
+                                    postType === 'question'
+                                        ? 'Start your question with how, what, why, etc.'
+                                        : 'Enter a descriptive title'
+                                }
                                 value={title}
                                 onChange={(event) => setTitle(event.target.value)}
                                 minLength={5}
@@ -113,7 +125,10 @@ function Post() {
 
                         {postType === 'question' && (
                             <div className="post-field-column">
-                                <label htmlFor="questionDescription">Describe your problem</label>
+                                <label htmlFor="questionDescription">
+                                    Describe your problem
+                                </label>
+
                                 <textarea
                                     id="questionDescription"
                                     value={description}
@@ -128,6 +143,7 @@ function Post() {
                             <>
                                 <div className="post-field-column">
                                     <label htmlFor="articleAbstract">Abstract</label>
+
                                     <textarea
                                         id="articleAbstract"
                                         placeholder="Enter a 1-paragraph abstract"
@@ -137,8 +153,10 @@ function Post() {
                                         required
                                     />
                                 </div>
+
                                 <div className="post-field-column">
                                     <label htmlFor="articleText">Article Text</label>
+
                                     <textarea
                                         id="articleText"
                                         placeholder="Enter your article text"
@@ -153,12 +171,15 @@ function Post() {
 
                         <div className="post-field-row tags-row">
                             <label htmlFor="postTags">Tags</label>
+
                             <input
                                 id="postTags"
                                 type="text"
-                                placeholder={postType === 'question'
-                                    ? 'Please add up to 3 tags to describe your question, e.g., Java'
-                                    : 'Please add up to 3 tags to describe your article, e.g., Java'}
+                                placeholder={
+                                    postType === 'question'
+                                        ? 'Please add up to 3 tags to describe your question, e.g., Java'
+                                        : 'Please add up to 3 tags to describe your article, e.g., Java'
+                                }
                                 value={tags}
                                 onChange={(event) => setTags(event.target.value)}
                             />
@@ -172,6 +193,8 @@ function Post() {
             </section>
         </main>
     );
+
+
 }
 
 export default Post;

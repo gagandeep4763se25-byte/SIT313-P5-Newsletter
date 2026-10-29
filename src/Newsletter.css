@@ -1,0 +1,152 @@
+.newsletter-section {
+    width: 100%;
+    padding: 15px 20px;
+    box-sizing: border-box;
+}
+
+.newsletter-container {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    background-color: #d3d3d3;
+
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+
+}
+
+.newsletter-container h2 {
+    margin: 0;
+    color: #222;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.newsletter-form {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+.newsletter-form label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.newsletter-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.newsletter-input-group input {
+    flex: 1;
+    min-width: 0;
+    height: 27px;
+    padding: 4px 8px;
+    box-sizing: border-box;
+
+
+    border: 1px solid #777;
+    border-radius: 0;
+    background-color: #fff;
+
+    color: #222;
+    font-size: 13px;
+
+
+}
+
+.newsletter-input-group input:focus {
+    outline: 2px solid #555;
+    outline-offset: 1px;
+}
+
+.newsletter-input-group button {
+    padding: 6px 15px;
+    box-sizing: border-box;
+
+
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    background-color: #bcbcbc;
+
+    color: #333;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+
+
+}
+
+.newsletter-input-group button:hover {
+    background-color: #aaa;
+}
+
+.newsletter-input-group button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.newsletter-message {
+    margin: 8px 0 0;
+    padding: 5px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.newsletter-message.success {
+    color: #17652b;
+}
+
+.newsletter-message.error {
+    color: #a32121;
+}
+
+@media (max-width: 600px) {
+    .newsletter-container {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .newsletter-container h2 {
+        width: 100%;
+        font-size: 16px;
+        white-space: normal;
+    }
+
+    .newsletter-form {
+        width: 100%;
+        flex: auto;
+    }
+
+
+}
+
+@media (max-width: 350px) {
+    .newsletter-input-group {
+        flex-wrap: wrap;
+    }
+
+
+    .newsletter-input-group input,
+    .newsletter-input-group button {
+        width: 100%;
+    }
+
+
+}

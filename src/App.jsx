@@ -1,11 +1,11 @@
 import { useState } from 'react';
-
 import {
   BrowserRouter,
   Routes,
   Route,
   Link,
   useNavigate,
+  useLocation,
 } from 'react-router-dom';
 
 import {
@@ -17,35 +17,30 @@ import {
 import { doc, setDoc } from 'firebase/firestore';
 
 import { auth, db } from './firebase';
-
-import Post from './Post';
-
+import Post from './post';
+import Newsletter from './Newsletter';
 import './App.css';
 
 function Navbar() {
-  return (
-    <nav className="navbar">
-      <Link to="/" className="brand">
-        DEV@Deakin
-      </Link>
+  return (<nav className="navbar"> <Link to="/" className="brand">
+    DEV@Deakin </Link>
 
-      <div className="nav-links">
-        <Link to="/">Home</Link>
 
-        <Link to="/post">Post</Link>
+    <div className="nav-links">
+      <Link to="/">Home</Link>
+      <Link to="/post">Post</Link>
+      <Link to="/login">Login</Link>
+      <Link to="/register">Sign Up</Link>
+    </div>
+  </nav>
 
-        <Link to="/login">Login</Link>
-
-        <Link to="/register">Sign Up</Link>
-      </div>
-    </nav>
   );
 }
 
 function Home() {
   return (
-    <>
-      <Navbar />
+    <> <Navbar />
+
 
       <main className="home-page">
         <h1>Welcome to DEV@Deakin</h1>
@@ -69,8 +64,12 @@ function Home() {
         </div>
       </main>
 
+      <Newsletter />
+
       <footer>© DEV@Deakin</footer>
     </>
+
+
   );
 }
 
@@ -85,12 +84,12 @@ function Register() {
 
   async function handleRegister(event) {
     event.preventDefault();
-
     setError('');
+
 
     const nameParts = fullName.trim().split(/\s+/);
 
-    if (nameParts.length < 2) {
+    if (nameParts.length < 2 || !nameParts[0] || !nameParts[1]) {
       setError('Please enter your first and last name.');
       return;
     }
@@ -136,20 +135,20 @@ function Register() {
     } finally {
       setLoading(false);
     }
+
+
   }
 
   return (
-    <>
-      <Navbar />
+    <> <Navbar />
+
 
       <main className="auth-page">
         <form className="auth-card" onSubmit={handleRegister}>
           <h1>Create an Account</h1>
-
           <p>Join the DEV@Deakin community</p>
 
           <label htmlFor="fullName">Full Name</label>
-
           <input
             id="fullName"
             type="text"
@@ -161,7 +160,6 @@ function Register() {
           />
 
           <label htmlFor="registerEmail">Email Address</label>
-
           <input
             id="registerEmail"
             type="email"
@@ -173,7 +171,6 @@ function Register() {
           />
 
           <label htmlFor="registerPassword">Password</label>
-
           <input
             id="registerPassword"
             type="password"
@@ -203,6 +200,8 @@ function Register() {
 
       <footer>© DEV@Deakin</footer>
     </>
+
+
   );
 }
 
@@ -213,10 +212,10 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   async function handleLogin(event) {
     event.preventDefault();
-
     setError('');
 
     try {
@@ -236,20 +235,23 @@ function Login() {
     } finally {
       setLoading(false);
     }
+
+
   }
 
   return (
-    <>
-      <Navbar />
+    <> <Navbar />
 
       <main className="auth-page">
         <form className="auth-card" onSubmit={handleLogin}>
           <h1>Welcome Back</h1>
-
           <p>Login to your DEV@Deakin account</p>
 
-          <label htmlFor="loginEmail">Email Address</label>
+          {location.state?.message && (
+            <p role="status">{location.state.message}</p>
+          )}
 
+          <label htmlFor="loginEmail">Email Address</label>
           <input
             id="loginEmail"
             type="email"
@@ -261,7 +263,6 @@ function Login() {
           />
 
           <label htmlFor="loginPassword">Password</label>
-
           <input
             id="loginPassword"
             type="password"
@@ -290,34 +291,24 @@ function Login() {
 
       <footer>© DEV@Deakin</footer>
     </>
+
+
   );
 }
 
 function PostPage() {
   return (
-    <>
-      <Navbar />
-
-      <Post />
-
-      <footer>© DEV@Deakin</footer>
+    <> <Navbar /> <Post /> <footer>© DEV@Deakin</footer>
     </>
   );
 }
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/register" element={<Register />} />
-
-        <Route path="/post" element={<PostPage />} />
-      </Routes>
-    </BrowserRouter>
+  return (<BrowserRouter> <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
+    <Route path="/post" element={<PostPage />} /> </Routes> </BrowserRouter>
   );
 }
 
